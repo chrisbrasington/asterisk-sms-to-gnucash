@@ -1,5 +1,6 @@
 import piecash
-#from piecash import open_book, Transaction, Split
+from piecash import open_book, Transaction, Split, Account, Commodity
+from piecash.core.factories import create_currency_from_ISO
 from datetime import datetime
 from decimal import Decimal
 
@@ -72,58 +73,82 @@ def add_transaction(t):
             to_account_found = True
 
     success = True  
+           
+    if t.income:
+        log("MISSING INCOME ACCOUNT: "+t.expense)
+    else:
+        # add missing expense account        
+        if not to_account_found:
+            with open_book(book_path, open_if_lock=True, readonly=False) as book:
+                
+                acc = book.root_account
+                for subacc in book.root_account.children:
+                    if subacc.name == 'Expenses':
+                        acc = subacc
+                        break
+                
+                a = Account(
+                            parent=acc,
+                            name=t.expense.split(':')[-1],
+                            type="EXPENSE",
+                            description='Automatically Added from SMS transaction.',
+                            commodity = book.commodities.get(mnemonic="USD"))
+                            
+                book.save()
+            to_account_found = True
     
-    # missing account
-    if not to_account_found or not from_account_found:
+    try: 
+        # reopen the book and add a transaction
+        # this must be a sqlite3 file
+        with open_book(book_path,
+                    open_if_lock=True,
+                    readonly=False) as mybook:
+            
+            today = datetime.now()
+            today = today.replace(microsecond = 0)
+            
+            # retrieve the currency from the book
+            USD = mybook.currencies(mnemonic='USD')
+            
+            # define the amount as Decimal
+            amount = t.amount
+            
+            # retrieve accounts
+            to_account = mybook.accounts(fullname=t.expense)
+            from_account = mybook.accounts(fullname=t.account)
+            
+            # if income, flip the accounts so 'income' is used instead of 'charge'
+            if t.income:
+                to_account = mybook.accounts(fullname=t.account)
+                from_account = mybook.accounts(fullname=t.expense)
+            
+            # create the transaction with its two splits
+            Transaction(
+                post_date=today,
+                enter_date=today,
+                currency=USD,
+                description=t.description,
+                splits=[
+                    Split(account=to_account,
+                        value=amount,
+                        memo='Automated from script'),
+                    Split(account=from_account,
+                        value=-amount,
+                        memo='Automated from script'),
+                ]
+            )
+            
+            # save the book
+            mybook.save()
+    except:
         success = False
-    
-    if success: 
-        try: 
-            # reopen the book and add a transaction
-            # this must be a sqlite3 file
-            with open_book(book_path,
-                        open_if_lock=True,
-                        readonly=False) as mybook:
-                today = datetime.now()
-                today = today.replace(microsecond = 0)
-                
-                # retrieve the currency from the book
-                USD = mybook.currencies(mnemonic='USD')
-                
-                # define the amount as Decimal
-                amount = t.amount
-                
-                # retrieve accounts
-                to_account = mybook.accounts(fullname=t.expense)
-                from_account = mybook.accounts(fullname=t.account)
-                
-                # if income, flip the accounts so 'income' is used instead of 'charge'
-                if t.income:
-                    to_account = mybook.accounts(fullname=t.account)
-                    from_account = mybook.accounts(fullname=t.expense)
-                
-                # create the transaction with its two splits
-                Transaction(
-                    post_date=today,
-                    enter_date=today,
-                    currency=USD,
-                    description=t.description,
-                    splits=[
-                        Split(account=to_account,
-                            value=amount,
-                            memo='Automated from script'),
-                        Split(account=from_account,
-                            value=-amount,
-                            memo='Automated from script'),
-                    ]
-                )
-                
-                # save the book
-                mybook.save()
-        except:
-            success = False
 
     log(success, t, to_account_found, from_account_found)
+
+def log(message):
+    with open("sms-transaction.log", "a") as myfile:
+        myfile.write(message)
+
 
 def log(success, t, to_account_found, from_account_found):
     if success:
