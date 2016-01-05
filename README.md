@@ -3,15 +3,15 @@
 
 Todo:
 
-    1 - Detect/Add expense account if not found
-    2 - Consider out-of-order sequence
-    3 - Add asterisk/SMS components
+    1 - Add asterisk/SMS components
     
 Done:
 
     1 - Parse string into transaction object
     2 - Commit transaction object to GNUCASH sqlite3 file 
     3 - Error log
+    4 - Create missing expense accounts automatically (expense only, not income)
+    5 - Redirect all other missing accounts to Imbalance
 
 ## Parameters: 
 
@@ -54,3 +54,14 @@ Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Ch
     CC as 'Liabilities:Credit Card'
     Checking as 'Assets:Current Assets:Checking Account'
     Savings as 'Assets:Current Assets:Savings Account'
+
+## Notes on Missing/Imbalance Account:
+
+When an expense comes in referenece a non-existant expense account, that expense account will be automatically created.
+All other missing accounts will redirect to Imbalance.
+I decided to only automatically create expense accounts, this seemed safe. Should the "from" account (like CC or checking) not exist, it will redirect to Imbalance.
+If income comes in and either the TO (where to deposit) or FROM (what type of income was this, like Salary) accounts do not exist, both will redirect to Imbalance.
+
+Imbalance allows the user to recognize an error in gnucash and correct transactions. Imbalance will highlight RED.
+
+Unless there is a problem connecting to the file, this should allow all transactions to process into the database.
