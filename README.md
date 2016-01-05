@@ -60,7 +60,7 @@ Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Ch
 When an expense comes in referenece a non-existant expense account, that expense account will be automatically created.
 All other missing accounts will redirect to Imbalance.
 I decided to only automatically create expense accounts, this seemed safe. Should the "from" account (like CC or checking) not exist, it will redirect to Imbalance.
-If income comes in and either the TO (where to deposit) or FROM (what type of income was this, like Salary) accounts do not exist, both will redirect to Imbalance.
+If income comes in and either the TO (where to deposit) or FROM (what type of income was this, like Salary) accounts do not exist, both can redirect to Imbalance.
 
 Imbalance allows the user to recognize an error in gnucash and correct transactions. Imbalance will highlight RED.
 
