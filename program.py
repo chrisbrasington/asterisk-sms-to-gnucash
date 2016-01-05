@@ -1,4 +1,4 @@
-import sys
+import sys, transaction
 
 class transaction:
     name = ""

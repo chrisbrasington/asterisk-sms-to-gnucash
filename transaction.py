@@ -4,7 +4,7 @@ from decimal import Decimal
 
 # reopen the book and add a transaction
 # this must be a sqlite3 file
-with open_book("/home/christopher/gnucash_backup/test.gnucash",
+with open_book("./sample.gnucash",
                open_if_lock=True,
                readonly=False) as mybook:
     today = datetime.now()
