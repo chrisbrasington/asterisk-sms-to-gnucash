@@ -1,3 +1,5 @@
+import sys
+
 class transaction:
     name = ""
     amount = 0.00
@@ -12,19 +14,18 @@ class transaction:
     def __str__(self):
         s = ("(" + str(self.amount) + ") "+ self.name + " - " + self.expense 
             + " from " + self.account)
-        
         if(self.income):
             s += " (as income)"
         else:
             s += " (as expense)"
-        
         return s
-    
-parseList = ["Dining,Pizza Place,$10.00"]
-parseList.append("Movie,The Martian,$16.66,Checking")
-parseList.append("Gift,Gift Card,$50.00,Checking,Income")
 
-for i in parseList:
+#parseList = ["Dining,Pizza Place,$10.00"]
+#parseList.append("Movie,The Martian,$16.66,Checking")
+#parseList.append("Gift,Gift Card,$50.00,Checking,Income")
+
+for a in range(1,len(sys.argv)):
+    i = sys.argv[a]
     splitTransaction = i.split(",")
     length = len(splitTransaction)
     
