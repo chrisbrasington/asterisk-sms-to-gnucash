@@ -40,12 +40,12 @@ Success:  ($9.00) "The Martian" Expenses:Books from Liabilities:Credit Card
 ### Changing Expense to come out of Checking and nested Expense Account:
 ```python parser.py "Entertainment:Movie,The Martian,$16.00,Checking"```
 
-Success:  ($16.00) "The Martian" Expenses:Movies from Account:Checking
+Success:  ($16.00) "The Martian" Expenses:Entertainment:Movies from Account:Checking
 
 ### Changing to Income to add into Checking:
 ```python parser.py "Salary,Making Bank,$1000000,Checking,Income"```
 
-Success:  ($1,000,000) "Making Bank" Income:Salary into Account:Checking
+Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Checking Account
 
 ## Shorthand:
 
