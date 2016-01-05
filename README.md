@@ -1,4 +1,13 @@
 # asterisk-sms-to-gnucash
+Todo: 
+    1 - Add expense accoount if not found
+    2 - Error log
+    3 - Add asterisk/SMS components
+
+Done:
+    1 - Parse string into transaction object
+    2 - Commit transaction object to GNUCASH sqlite3 file 
+
 Create transactions via text-messagging to a listening asterisk server and gnucash.
 
 At minimum, 3 parameters are required:
@@ -21,16 +30,16 @@ This allows you to expense or add income to another account.
 
 ## Examples: 
 ### Defaulting as Credit Card Expense:
-```"Books,The Martian,$9.00"```
+```python parser.py "Books,The Martian,$9.00"```
 
 Success:  ($9.00) "The Martian" Expenses:Books from Liabilities:Credit Card
 
 ### Changing Expense to come out of Checking:
-```"Movies,The Martian,$16.00,Checking"```
+```python parser.py "Movies,The Martian,$16.00,Checking"```
 
 Success:  ($16.00) "The Martian" Expenses:Movies from Account:Checking
 
 ### Changing to Income to add into Checking:
-```"Salary,Making Bank,$1,000,000,Checking, Income"```
+```python parser.py "Salary,Making Bank,$1,000,000,Checking, Income"```
 
 Success:  ($1,000,000) "Making Bank" Income:Salary into Account:Checking
