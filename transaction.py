@@ -13,19 +13,26 @@ class transaction:
         self.name = name
         self.amount = Decimal(amount.strip('$'))
 
-        # allow for shorthand of 'Credit Card' as 'CC'
-        if(account == 'CC'):
+        # allow for shorthand 
+        # 'CC' for 'Credit Card'
+        if account == 'CC':
             acount == 'Credit Card'
+        # 'Checking' for 'Checking Account'
+        elif account == 'Checking':
+            account = "Checking Account"
+        # 'Savings' for 'Savings Account'
+        elif account == 'Savings':
+            account = "Savings Account"
         
         # from account:
         #   want to prefix either 'Liabilities:' or 'Account:' on the from_account
         #   unless explicitly stated in message
         if 'Liabilities:' not in account or 'Account:' not in account:
-            if(account == 'Credit Card'):
+            if account == 'Credit Card' :
                 account = 'Liabilities:' + account
             else:
-                account = 'Account:' + account
-        
+                account = 'Assets:Current Assets:' + account
+               
         # to account: 
         #   want to prefix either 'Expense:' or 'Income:' on the to_account
         #   unless explicitly stated in message
@@ -70,6 +77,11 @@ def add_transaction(t):
             # retrieve accounts
             to_account = mybook.accounts(fullname=t.expense)
             from_account = mybook.accounts(fullname=t.account)
+            
+            # if income, flip the accounts so 'income' is used instead of 'charge'
+            if t.income:
+                to_account = mybook.accounts(fullname=t.account)
+                from_account = mybook.accounts(fullname=t.expense)
             
             # create the transaction with its two splits
             Transaction(

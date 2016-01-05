@@ -3,14 +3,14 @@
 
 Todo:
 
-    1 - Add expense account if not found
-    2 - Error log
-    3 - Add asterisk/SMS components
+    1 - Detect/Add expense account if not found
+    2 - Add asterisk/SMS components
 
 Done:
 
     1 - Parse string into transaction object
     2 - Commit transaction object to GNUCASH sqlite3 file 
+    3 - Error log
 
 ## Parameters: 
 
@@ -37,12 +37,18 @@ This allows you to expense or add income to another account.
 
 Success:  ($9.00) "The Martian" Expenses:Books from Liabilities:Credit Card
 
-### Changing Expense to come out of Checking:
-```python parser.py "Movies,The Martian,$16.00,Checking"```
+### Changing Expense to come out of Checking and nested Expense Account:
+```python parser.py "Entertainment:Movie,The Martian,$16.00,Checking"```
 
 Success:  ($16.00) "The Martian" Expenses:Movies from Account:Checking
 
 ### Changing to Income to add into Checking:
-```python parser.py "Salary,Making Bank,$1,000,000,Checking, Income"```
+```python parser.py "Salary,Making Bank,$1000000,Checking,Income"```
 
 Success:  ($1,000,000) "Making Bank" Income:Salary into Account:Checking
+
+## Shorthand:
+
+    CC as 'Liabilities:Credit Card'
+    Checking as 'Assets:Current Assets:Checking Account'
+    Savings as 'Assets:Current Assets:Savings Account'
