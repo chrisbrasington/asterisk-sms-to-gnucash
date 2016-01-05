@@ -13,19 +13,28 @@ class transaction:
         self.name = name
         self.amount = Decimal(amount.strip('$'))
 
+        # allow for shorthand of 'Credit Card' as 'CC'
         if(account == 'CC'):
             acount == 'Credit Card'
         
-        if(account == 'Credit Card'):
-            account = 'Liabilities:' + account
-        else:
-            account = 'Account:' + account
+        # from account:
+        #   want to prefix either 'Liabilities:' or 'Account:' on the from_account
+        #   unless explicitly stated in message
+        if 'Liabilities:' not in account or 'Account:' not in account:
+            if(account == 'Credit Card'):
+                account = 'Liabilities:' + account
+            else:
+                account = 'Account:' + account
         
-        if(income):
-            expense = 'Income:' + expense
-        else:
-            expense = 'Expenses:' + expense
-            
+        # to account: 
+        #   want to prefix either 'Expense:' or 'Income:' on the to_account
+        #   unless explicitly stated in message
+        if 'Income:' not in account or 'Expenses:' not in account:
+            if(income):
+                expense = 'Income:' + expense
+            else:
+                expense = 'Expenses:' + expense
+                
         self.expense = expense
         self.account = account
         self.income = income
