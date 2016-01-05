@@ -1,4 +1,5 @@
-from piecash import open_book, Transaction, Split
+import piecash
+#from piecash import open_book, Transaction, Split
 from datetime import datetime
 from decimal import Decimal
 
@@ -57,62 +58,90 @@ class transaction:
         return s
 
 def add_transaction(t):
-    success = True
+    book_path = './sample.gnucash'
     
-    try: 
-        # reopen the book and add a transaction
-        # this must be a sqlite3 file
-        with open_book('./sample.gnucash',
-                    open_if_lock=True,
-                    readonly=False) as mybook:
-            today = datetime.now()
-            today = today.replace(microsecond = 0)
-            
-            # retrieve the currency from the book
-            USD = mybook.currencies(mnemonic='USD')
-            
-            # define the amount as Decimal
-            amount = t.amount
-            
-            # retrieve accounts
-            to_account = mybook.accounts(fullname=t.expense)
-            from_account = mybook.accounts(fullname=t.account)
-            
-            # if income, flip the accounts so 'income' is used instead of 'charge'
-            if t.income:
-                to_account = mybook.accounts(fullname=t.account)
-                from_account = mybook.accounts(fullname=t.expense)
-            
-            # create the transaction with its two splits
-            Transaction(
-                post_date=today,
-                enter_date=today,
-                currency=USD,
-                description=t.description,
-                splits=[
-                    Split(account=to_account,
-                        value=amount,
-                        memo='Automated from script'),
-                    Split(account=from_account,
-                        value=-amount,
-                        memo='Automated from script'),
-                ]
-            )
-            
-            # save the book
-            mybook.save()
-    except:
-        success = False
-    finally:
-        log(success, t)
+    # check for existance of to_account and from_account
+    book = piecash.open_book(book_path)
+    to_account_found = False
+    from_account_found = False
 
-def log(success, t):
+    for a in book.accounts:
+        if a.fullname == t.account:
+            from_account_found = True
+        elif a.fullname == t.expense:
+            to_account_found = True
+
+    success = True  
+    
+    # missing account
+    if not to_account_found or not from_account_found:
+        success = False
+    
+    if success: 
+        try: 
+            # reopen the book and add a transaction
+            # this must be a sqlite3 file
+            with open_book(book_path,
+                        open_if_lock=True,
+                        readonly=False) as mybook:
+                today = datetime.now()
+                today = today.replace(microsecond = 0)
+                
+                # retrieve the currency from the book
+                USD = mybook.currencies(mnemonic='USD')
+                
+                # define the amount as Decimal
+                amount = t.amount
+                
+                # retrieve accounts
+                to_account = mybook.accounts(fullname=t.expense)
+                from_account = mybook.accounts(fullname=t.account)
+                
+                # if income, flip the accounts so 'income' is used instead of 'charge'
+                if t.income:
+                    to_account = mybook.accounts(fullname=t.account)
+                    from_account = mybook.accounts(fullname=t.expense)
+                
+                # create the transaction with its two splits
+                Transaction(
+                    post_date=today,
+                    enter_date=today,
+                    currency=USD,
+                    description=t.description,
+                    splits=[
+                        Split(account=to_account,
+                            value=amount,
+                            memo='Automated from script'),
+                        Split(account=from_account,
+                            value=-amount,
+                            memo='Automated from script'),
+                    ]
+                )
+                
+                # save the book
+                mybook.save()
+        except:
+            success = False
+
+    log(success, t, to_account_found, from_account_found)
+
+def log(success, t, to_account_found, from_account_found):
     if success:
         message = 'Success: '
     else:
         message = 'FAILURE: '
     message += datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' '
-    message += str(t) + '\n'
+    message += ('($' + str(t.amount) + ') "'+ t.description+'" ')
+    message += t.expense
+    if(not to_account_found):
+        message += ' (MISSING) '
+    if t.income:
+        message += " into "
+    else:
+        message += " from "
+    message += t.account
+    if(not from_account_found):
+        message += ' (MISSING) '
     
     print message,
     
