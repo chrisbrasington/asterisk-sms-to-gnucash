@@ -76,39 +76,42 @@ def add_transaction(t):
     
     expense_account_created = False
     
-    # income - allow for not found accounts to instead go to Imbalance account
-    if t.income:
-        if not to_account_found:
-            t.account = 'Imbalance'
-        if not from_account_found:
-            t.expense = 'Imbalance'
-    # expense - allow creation of expense accounts ONLY
-    #         - allow not found "from" accounts to instead go to Imbalance account
-    else:
-        # add missing expense account        
-        if not to_account_found:
-            with open_book(book_path, open_if_lock=True, readonly=False) as book:
-                
-                acc = book.root_account
-                for subacc in book.root_account.children:
-                    if subacc.name == 'Expenses':
-                        acc = subacc
-                        break
-                
-                a = Account(
-                            parent=acc,
-                            name=t.expense.split(':')[-1],
-                            type="EXPENSE",
-                            description='Automatically Added from SMS transaction.',
-                            commodity = book.commodities.get(mnemonic="USD"))
-                            
-                book.save()
-            to_account_found = True
-            expense_account_created = True
-        if not from_account_found:
-            t.account = "Imbalance"
-    
-    try: 
+    try:
+        # income - allow for not found accounts to instead go to Imbalance account
+        if t.income:
+            if not to_account_found:
+                t.account = 'Imbalance'
+            if not from_account_found:
+                t.expense = 'Imbalance'
+        # expense - allow creation of expense accounts ONLY
+        #         - allow not found "from" accounts to instead go to Imbalance account
+        else:
+            # add missing expense account        
+            if not to_account_found:
+                with open_book(book_path, open_if_lock=True, readonly=False) as book:
+                    
+                    acc = book.root_account
+                    for subacc in book.root_account.children:
+                        if subacc.name == 'Expenses':
+                            acc = subacc
+                            break
+                    
+                    # could change this and loop to support mutli-level expense account creation
+                    #t.expense = 'Expense:' + t.expense.split(':')[-1]
+                    
+                    a = Account(
+                                parent=acc,
+                                name=t.expense.split(':')[-1],
+                                type="EXPENSE",
+                                description='Automatically Added from SMS transaction.',
+                                commodity = book.commodities.get(mnemonic="USD"))
+                                
+                    book.save()
+                to_account_found = True
+                expense_account_created = True
+            if not from_account_found:
+                t.account = "Imbalance"
+            
         # reopen the book and add a transaction
         # this must be a sqlite3 file
         with open_book(book_path,
