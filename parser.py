@@ -3,15 +3,15 @@ from transaction import transaction, add_transaction
 
 for a in range(1,len(sys.argv)):
     i = sys.argv[a]
-    splitTransaction = i.split(',')
-    length = len(splitTransaction)
+    transactionArray = i.split(',')
+    length = len(transactionArray)
     
     if length == 3:
-        t = transaction(splitTransaction[1], splitTransaction[2],splitTransaction[0])
+        t = transaction(transactionArray[0], transactionArray[1],transactionArray[2])
     if length == 4 :
-        t = transaction(splitTransaction[1], splitTransaction[2],splitTransaction[0], splitTransaction[3])
+        t = transaction(transactionArray[0], transactionArray[1],transactionArray[2], transactionArray[3])
     if length == 5:
-        t = transaction(splitTransaction[1], splitTransaction[2],splitTransaction[0], splitTransaction[3], True) 
+        t = transaction(transactionArray[0], transactionArray[1],transactionArray[2], transactionArray[3], True) 
 
     add_transaction(t)
     

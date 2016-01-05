@@ -3,14 +3,14 @@ from datetime import datetime
 from decimal import Decimal
 
 class transaction:
-    name = ''
+    description = ''
     amount = 0.00
     expense = 'Imbalance'
     account = 'Credit Card'
     income = False
     
-    def __init__(self, name, amount, expense = 'Imbalance', account = 'Credit Card', income = False):
-        self.name = name
+    def __init__(self, amount, description, expense = 'Imbalance', account = 'Credit Card', income = False):
+        self.description = description
         self.amount = Decimal(amount.strip('$'))
 
         # allow for shorthand 
@@ -47,7 +47,7 @@ class transaction:
         self.income = income
         
     def __str__(self):
-        s = ('($' + str(self.amount) + ') "'+ self.name+'" ')
+        s = ('($' + str(self.amount) + ') "'+ self.description+'" ')
         s += self.expense
         if self.income:
             s += " into "
@@ -88,7 +88,7 @@ def add_transaction(t):
                 post_date=today,
                 enter_date=today,
                 currency=USD,
-                description=t.name,
+                description=t.description,
                 splits=[
                     Split(account=to_account,
                         value=amount,

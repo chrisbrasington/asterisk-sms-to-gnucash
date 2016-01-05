@@ -4,8 +4,9 @@
 Todo:
 
     1 - Detect/Add expense account if not found
-    2 - Add asterisk/SMS components
-
+    2 - Consider out-of-order sequence
+    3 - Add asterisk/SMS components
+    
 Done:
 
     1 - Parse string into transaction object
@@ -14,11 +15,12 @@ Done:
 
 ## Parameters: 
 
-At minimum, 3 parameters are required:
+At minimum, 3 parameters are required (in this order):
 
     1 - the dollar amount
     2 - a description
     3 - the expense account name must be specified. 
+    
 The transaction will default as an expense. The withdrawal account will default to 'Liabilities:Credit Card' when not specified.
 
 A positive dollar amount will be added into the Expense:{Name} account.
@@ -33,17 +35,17 @@ This allows you to expense or add income to another account.
 
 ## Examples: 
 ### Defaulting as Credit Card Expense:
-```python parser.py "Books,The Martian,$9.00"```
+```python parser.py "$9.00,The Martian,Books"```
 
 Success:  ($9.00) "The Martian" Expenses:Books from Liabilities:Credit Card
 
 ### Changing Expense to come out of Checking and nested Expense Account:
-```python parser.py "Entertainment:Movie,The Martian,$16.00,Checking"```
+```python parser.py "$16.00,The Martian,Entertainment:Movie,Checking"```
 
 Success:  ($16.00) "The Martian" Expenses:Entertainment:Movies from Account:Checking
 
 ### Changing to Income to add into Checking:
-```python parser.py "Salary,Making Bank,$1000000,Checking,Income"```
+```python parser.py "1000000,Making Bank,Salary,Checking,Income"```
 
 Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Checking Account
 
