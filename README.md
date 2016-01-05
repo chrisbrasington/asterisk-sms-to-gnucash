@@ -49,6 +49,12 @@ Success:  ($16.00) "The Martian" Expenses:Entertainment:Movies from Account:Chec
 
 Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Checking Account
 
+### Add Expense to new Expense Account:
+```python parser.py "5.00,Climbing Gym Day Pass,Sports"```
+
+Success:  ($5.00) "Climbing Gym Day Pass:, Expenses:Sports from Liabilities:Credit Card
+Note: Expenses:Sports did not exist and was automatically created.
+
 ## Shorthand:
 
     CC as 'Liabilities:Credit Card'
