@@ -1,4 +1,6 @@
 # asterisk-sms-to-gnucash
+##### Create transactions via short text-messagging to a listening asterisk server and gnucash sqlite3 database file.
+
 Todo:
 
     1 - Add expense account if not found
@@ -9,8 +11,6 @@ Done:
 
     1 - Parse string into transaction object
     2 - Commit transaction object to GNUCASH sqlite3 file 
-
-Create transactions via text-messagging to a listening asterisk server and gnucash.
 
 At minimum, 3 parameters are required:
 
