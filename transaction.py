@@ -73,9 +73,15 @@ def add_transaction(t):
             to_account_found = True
 
     success = True  
-           
+    
+    # income - allow for not found accounts to instead go to Imbalance account
     if t.income:
-        log("MISSING INCOME ACCOUNT: "+t.expense)
+        if not to_account_found:
+            t.account = 'Imbalance'
+        if not from_account_found:
+            t.expense = 'Imbalance'
+    # expense - allow creation of expense accounts ONLY
+    #         - allow not found "from" accounts to instead go to Imbalance account
     else:
         # add missing expense account        
         if not to_account_found:
@@ -96,6 +102,8 @@ def add_transaction(t):
                             
                 book.save()
             to_account_found = True
+        if not from_account_found:
+            t.account = "Imbalance"
     
     try: 
         # reopen the book and add a transaction
@@ -146,6 +154,7 @@ def add_transaction(t):
     log(success, t, to_account_found, from_account_found)
 
 def log(message):
+    message += '\n'
     with open("sms-transaction.log", "a") as myfile:
         myfile.write(message)
 
@@ -167,7 +176,7 @@ def log(success, t, to_account_found, from_account_found):
     message += t.account
     if(not from_account_found):
         message += ' (MISSING) '
-    
+    message += '\n'
     print message,
     
     with open("sms-transaction.log", "a") as myfile:
