@@ -17,10 +17,9 @@ At minimum, 3 parameters are required:
     1 - the dollar amount
     2 - a description
     3 - the expense account name must be specified. 
-The transaction will default as an expense with the withdrawal account will default to 'Liabilities:Credit Card' when not specified.
+The transaction will default as an expense. The withdrawal account will default to 'Liabilities:Credit Card' when not specified.
 
 A positive dollar amount will be added into the Expense:{Name} account.
-
 A negative dollar amount will be added into the Liabilities/Account.
 
 Two more paramters exist to change the Account and switch Expense to Income
