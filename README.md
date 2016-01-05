@@ -12,6 +12,8 @@ Done:
     1 - Parse string into transaction object
     2 - Commit transaction object to GNUCASH sqlite3 file 
 
+## Parameters: 
+
 At minimum, 3 parameters are required:
 
     1 - the dollar amount
