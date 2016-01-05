@@ -53,7 +53,8 @@ Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Ch
 ```python parser.py "5.00,Climbing Gym Day Pass,Sports"```
 
 Success:  ($5.00) "Climbing Gym Day Pass:, Expenses:Sports from Liabilities:Credit Card
-Note: Expenses:Sports did not exist and was automatically created.
+
+Note: The account Expenses:Sports did not exist and was automatically created.
 
 ## Shorthand:
 
