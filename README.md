@@ -1,10 +1,12 @@
 # asterisk-sms-to-gnucash
-Todo: 
+Todo:
+
     1 - Add expense accoount if not found
     2 - Error log
     3 - Add asterisk/SMS components
 
 Done:
+
     1 - Parse string into transaction object
     2 - Commit transaction object to GNUCASH sqlite3 file 
 
