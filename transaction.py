@@ -83,11 +83,18 @@ def add_transaction(t):
     except:
         success = False
     finally:
-        if(success):
-            print 'Success:',
-        else:
-            print 'Failure:',
-        print t
-        
+        log(success, t)
 
-       
+def log(success, t):
+    if success:
+        message = 'Success: '
+    else:
+        message = 'FAILURE: '
+    message += datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' '
+    message += str(t) + '\n'
+    
+    print message,
+    
+    with open("sms-transaction.log", "a") as myfile:
+        myfile.write(message)
+
