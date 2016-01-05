@@ -1,7 +1,7 @@
 # asterisk-sms-to-gnucash
 Todo:
 
-    1 - Add expense accoount if not found
+    1 - Add expense account if not found
     2 - Error log
     3 - Add asterisk/SMS components
 
