@@ -1,4 +1,4 @@
-# asterisk-sms-to-gnucash
+# text-messaging-to-gnucash
 ##### Create transactions via short text-messagging to a listening asterisk server and gnucash sqlite3 database file.
 
 Todo:
