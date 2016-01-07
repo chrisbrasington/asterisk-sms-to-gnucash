@@ -35,23 +35,26 @@ Two more paramters exist to change the Account and switch Expense to Income
 This allows you to expense or add income to another account. 
 
 ## Examples: 
+
+Note: The command 'transaction' (transaction.bat) is synonymous with 'python2 parser.py'
+
 ### Defaulting as Credit Card Expense:
-```python parser.py '$9.00,The Martian,Books'```
+```transaction '$9.00,The Martian,Books'```
 
 Success:  ($9.00) "The Martian" Expenses:Books from Liabilities:Credit Card
 
 ### Changing Expense to come out of Checking and nested Expense Account:
-```python parser.py '$16.00,The Martian,Entertainment:Movie,Checking'```
+```transaction '$16.00,The Martian,Entertainment:Movie,Checking'```
 
 Success:  ($16.00) "The Martian" Expenses:Entertainment:Movies from Account:Checking
 
 ### Changing to Income to add into Checking:
-```python parser.py '1000000,Making Bank,Salary,Checking,Income'```
+```transaction '1000000,Making Bank,Salary,Checking,Income'```
 
 Success:  ($1,000,000) "Making Bank" Income:Salary into Assets:Current Assets:Checking Account
 
 ### Add Expense to new Expense Account:
-```python parser.py '5.00,Climbing Gym Day Pass,Sports'```
+```transaction '5.00,Climbing Gym Day Pass,Sports'```
 
 Success:  ($5.00) "Climbing Gym Day Pass:, Expenses:Sports from Liabilities:Credit Card
 
