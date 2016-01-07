@@ -190,6 +190,6 @@ def log(success, t, to_account_found, from_account_found, expense_account_create
     
     print message,
     
-    with open("sms-transaction.log", "a") as myfile:
+    with open("./sms-transaction.log", "a") as myfile:
         myfile.write(message)
 
