@@ -1,4 +1,4 @@
-import piecash, yaml
+import os, piecash, yaml
 from piecash import open_book, Transaction, Split, Account, Commodity
 from piecash.core.factories import create_currency_from_ISO
 from datetime import datetime
@@ -60,7 +60,9 @@ class transaction:
 
 def add_transaction(t):
 
-    with open('settings.yaml') as ymlfile:
+    settings_file =  os.environ['HOME'] + "/gnucash/settings.yaml"
+
+    with open(settings_file) as ymlfile:
         settings = yaml.load(ymlfile)
 
     book_path = settings['location'] + settings['gnucash']

@@ -76,3 +76,9 @@ If income comes in and either the TO (where to deposit) or FROM (what type of in
 Imbalance allows the user to recognize an error in gnucash and correct transactions. Imbalance will highlight RED.
 
 Unless there is a problem connecting to the file, this should allow all transactions to process into the database.
+
+## settings.yaml sample
+
+    location: './'
+    gnucash: sample.gnucash
+    log: sms-transaction.log
