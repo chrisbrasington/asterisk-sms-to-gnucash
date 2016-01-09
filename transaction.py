@@ -1,4 +1,4 @@
-import piecash
+import piecash, yaml
 from piecash import open_book, Transaction, Split, Account, Commodity
 from piecash.core.factories import create_currency_from_ISO
 from datetime import datetime
@@ -59,8 +59,13 @@ class transaction:
         return s
 
 def add_transaction(t):
-    book_path = './sample.gnucash'
-    
+
+    with open('settings.yaml') as ymlfile:
+        settings = yaml.load(ymlfile)
+
+    book_path = settings['location'] + settings['gnucash']
+    log_file = settings['location'] + settings['log']   
+ 
     # check for existance of to_account and from_account
     book = piecash.open_book(book_path)
     to_account_found = False
@@ -157,15 +162,15 @@ def add_transaction(t):
     except:
         success = False
 
-    log(success, t, to_account_found, from_account_found, expense_account_created)
+    log(success, t, to_account_found, from_account_found, expense_account_created, log_file)
 
-def log(message):
+def log(message, file_path):
     message += '\n'
-    with open("sms-transaction.log", "a") as myfile:
+    with open(file_path, 'w+') as myfile:
         myfile.write(message)
 
 
-def log(success, t, to_account_found, from_account_found, expense_account_created):
+def log(success, t, to_account_found, from_account_found, expense_account_created, file_path):
     if success:
         message = 'Success: '
     else:
@@ -190,6 +195,6 @@ def log(success, t, to_account_found, from_account_found, expense_account_create
     
     print message,
     
-    with open("./sms-transaction.log", "a") as myfile:
+    with open(file_path, 'w+') as myfile:
         myfile.write(message)
 

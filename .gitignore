@@ -1,3 +1,4 @@
 *.log
 *.pyc
 *.gnucash.*.gnucash
+*.swp
