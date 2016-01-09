@@ -2,4 +2,4 @@
 *.pyc
 *.gnucash.*.gnucash
 *.swp
-settings.yml
+settings.yaml
