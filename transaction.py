@@ -26,15 +26,15 @@ class transaction:
         elif account == 'Savings':
             account = "Savings Account"
         elif account == 'Cash':
-            account = 'Wallet:Cash'
+            account = 'Assets:Wallet:Cash'
         
         # from account:
         #   want to prefix either 'Liabilities:' or 'Account:' on the from_account
         #   unless explicitly stated in message
-        if 'Liabilities:' not in account or 'Account:' not in account:
+        if 'Liabilities' not in account or 'Assets' not in account:
             if account == 'Credit Card' :
                 account = 'Liabilities:' + account
-            else:
+            elif 'Cash' not in account:
                 account = 'Assets:Current Assets:' + account
                
         # to account: 
