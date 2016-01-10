@@ -25,6 +25,8 @@ class transaction:
         # 'Savings' for 'Savings Account'
         elif account == 'Savings':
             account = "Savings Account"
+        elif account == 'Cash':
+            account = 'Wallet:Cash'
         
         # from account:
         #   want to prefix either 'Liabilities:' or 'Account:' on the from_account
