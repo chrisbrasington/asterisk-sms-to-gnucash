@@ -1,19 +1,6 @@
 # text-messaging-to-gnucash
 ##### Create transactions via short text-messagging to a gnucash sqlite3 database file.
 
-Todo:
-
-    1 - Add asterisk/SMS components
-    2 - Support creation of multi-level expense accounts 
-    
-Done:
-
-    1 - Parse string into transaction object
-    2 - Commit transaction object to GNUCASH sqlite3 file 
-    3 - Error log
-    4 - Create missing expense accounts automatically (expense only, not income)
-    5 - Redirect all other missing accounts to Imbalance
-
 ## Parameters: 
 
 At minimum, 3 parameters are required (in this order):
